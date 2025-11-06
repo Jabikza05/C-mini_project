@@ -1,134 +1,151 @@
-#include"header.h"
 
+#include"header.h"
 
 void stud_del(ST **p)
 {
-    char op;
+    if (*p == NULL)
+    {
+        printf("No records to delete.\n");
+        return;
+    }
 
+    char op;
     printf("\n________________________________\n");
     printf("|                                |\n");
-    printf("| R/r : enter roll to del        |\n");
-    printf("| N/n : enter name to del        |\n");
+    printf("| R/r : Enter roll to delete     |\n");
+    printf("| N/n : Enter name to delete     |\n");
     printf("|                                |\n");
     printf("----------------------------------\n");
+    scanf(" %c", &op);
 
-    scanf(" %c",&op);
+    // Duplicate the list temporarily
+    ST *temp = *p, *head2 = NULL, *new, *t, *last = NULL;
 
-    switch(op)
+    while (temp)
+    {
+        new = (ST*)malloc(sizeof(ST));
+        *new = *temp;
+        new->next = NULL;
+
+        if (head2 == NULL)
+            head2 = last = new;
+        else
+        {
+            last->next = new;
+            last = new;
+        }
+        temp = temp->next;
+    }
+
+    ST *prev = NULL;
+    temp = head2;
+
+    switch (op)
     {
         case 'R': case 'r':
         {
-            int n;
-            printf(" Enter the roll no: ");
-            scanf("%d", &n);
+            int roll;
+            printf("Enter roll number to delete: ");
+            scanf("%d", &roll);
 
-            ST *last = NULL, *temp = *p;
-
-            while(temp != NULL)
+            while (temp)
             {
-                if(temp->roll == n)
+                if (temp->roll == roll)
                 {
-                    if(temp == *p)
-                        *p = temp->next;
+                    if (prev == NULL)
+                        head2 = temp->next;
                     else
-                        last->next = temp->next;
+                        prev->next = temp->next;
 
                     free(temp);
-                    printf("Deleted the particular roll no record...\n");
-                    return;
+                    printf("Record deleted temporarily....\n");
+                    break;
                 }
-                last = temp;
+                prev = temp;
                 temp = temp->next;
             }
-            printf("Roll no not found!\n");
             break;
         }
 
         case 'N': case 'n':
         {
-            char s[20];
-            printf(" Enter the name: ");
-            scanf("%s", s);
+            char name[20];
+            printf("Enter name to delete: ");
+            scanf("%s", name);
 
-            ST *temp = *p;
-            int count = 0;
-
-            while(temp != NULL)
+            // 🔹 Step 1: show all matching names
+            int found = 0;
+            ST *temp2 = head2;
+            printf("\nMatching records with name '%s':\n", name);
+            printf("--------------------------------------\n");
+            printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+            printf("--------------------------------------\n");
+            while (temp2)
             {
-                if(strcmp(temp->name, s) == 0)
-                    count++;
-                temp = temp->next;
+                if (strcmp(temp2->name, name) == 0)
+                {
+                    printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
+                    printf("--------------------------------------\n");
+                    found = 1;
+                }
+                temp2 = temp2->next;
             }
 
-            if(count == 0)
+            if (!found)
             {
-                printf("Name not found!\n");
+                printf("No records found with the given name.\n");
                 break;
             }
-            else if(count == 1)
+
+            // 🔹 Step 2: ask user which roll to delete if multiple
+            printf("Enter roll number to delete from above list: ");
+            int rno;
+            scanf("%d", &rno);
+
+            temp = head2;
+            prev = NULL;
+            while (temp)
             {
-                ST *last = NULL;
-                temp = *p;
-                while(temp != NULL)
+                if (temp->roll == rno && strcmp(temp->name, name) == 0)
                 {
-                    if(strcmp(temp->name, s) == 0)
-                    {
-                        if(temp == *p)
-                            *p = temp->next;
-                        else
-                            last->next = temp->next;
+                    if (prev == NULL)
+                        head2 = temp->next;
+                    else
+                        prev->next = temp->next;
 
-                        free(temp);
-                        printf("Deleted the record with name %s\n", s);
-                        return;
-                    }
-                    last = temp;
-                    temp = temp->next;
+                    free(temp);
+                    printf("Record deleted (temporarily) successfully.\n");
+                    break;
                 }
+                prev = temp;
+                temp = temp->next;
             }
-            else
-            {
-                printf("\nMatching records for name \"%s\":\n", s);
-                temp = *p;
-                while(temp != NULL)
-                {
-                    if(strcmp(temp->name, s) == 0)
-                        printf(" Roll: %d ", temp->roll);
-                    temp = temp->next;
-                }
-
-                int n;
-                printf("\n Enter the roll no to delete: ");
-                scanf("%d", &n);
-
-                ST *last = NULL;
-                temp = *p;
-                while(temp != NULL)
-                {
-                    if(temp->roll == n && strcmp(temp->name, s) == 0)
-                    {
-                        if(temp == *p)
-                            *p = temp->next;
-                        else
-                            last->next = temp->next;
-
-                        free(temp);
-                        printf("Deleted record with roll %d and name %s\n", n, s);
-                        return;
-                    }
-                    last = temp;
-                    temp = temp->next;
-                }
-
-                printf("Roll no not found for the given name!\n");
-            }
-
             break;
         }
 
         default:
-            printf("\nInvalid choice...\n");
+            printf("Invalid option!\n");
             break;
+    }
+
+    // Display temporary list in tabular format
+    temp = head2;
+    printf("\n--------------------------------------\n");
+    printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+    printf("------------------------------------\n");
+    while (temp)
+    {
+        printf("|%-5d |%-20s |%-7.2f|\n", temp->roll, temp->name, temp->marks);
+        printf("------------------------------------\n");
+        temp = temp->next;
+    }
+
+    // Free temporary list
+    while (head2)
+    {
+        t = head2;
+        head2 = head2->next;
+        free(t);
     }
 }
 
