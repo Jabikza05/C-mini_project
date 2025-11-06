@@ -1,6 +1,6 @@
-student_details:main.o stud_add.o stud_del.o stud_show.o stud_mod.o stud_exit.o stud_save.o  stud_sort.o stud_del_all_rec.o stud_rev.o
+student:main.o stud_add.o stud_del.o stud_show.o stud_mod.o stud_exit.o stud_save.o  stud_sort.o stud_del_all_rec.o stud_rev.o
 
-	cc main.c stud_add.c stud_del.c stud_show.c stud_mod.c stud_exit.c stud_save.c  stud_sort.c stud_del_all_rec.c stud_rev.c -o student_details 
+	cc main.c stud_add.c stud_del.c stud_show.c stud_mod.c stud_exit.c stud_save.c  stud_sort.c stud_del_all_rec.c stud_rev.c -o student 
 
 main.o:main.c
 	cc -c main.c
