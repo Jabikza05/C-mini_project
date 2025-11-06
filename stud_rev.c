@@ -1,41 +1,63 @@
+
 #include"header.h"
-void stud_rev(ST **ptr)
+
+void stud_rev(ST **p)
 {
-	int i,c=count(*ptr);
+    if (*p == NULL)
+    {
+        printf("No records to reverse.\n");
+        return;
+    }
 
-	ST *temp=*ptr;
+    // Duplicate list temporarily
+    ST *temp = *p, *head2 = NULL, *new, *t, *last = NULL;
+    while(temp)
+    {
+        new = (ST*)malloc(sizeof(ST));
+        *new = *temp;
+        new->next = NULL;
 
-	ST  **p=(ST**)malloc(c*sizeof(ST*));
+        if(head2 == NULL)
+            head2 = last = new;
+        else
+        {
+            last->next = new;
+            last = new;
+        }
+        temp = temp->next;
+    }
 
-	for(i=0;i<c;i++)
-	{
-		p[i]=temp;
-		temp=temp->next;
-	}
-	
-	p[0]->next=0;
+    // Reverse the duplicate list (temporary)
+    ST *prev = NULL, *next;
+    temp = head2;
+    while(temp)
+    {
+        next = temp->next;
+        temp->next = prev;
+        prev = temp;
+        temp = next;
+    }
+    head2 = prev;
 
-	for(i=1;i<c;i++)
-		p[i]->next=p[i-1];
+    // Display temporary reversed list
+    printf("\nRecords in reverse order temporary...:\n");
+    printf("\n--------------------------------------\n");
+    printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+    printf("------------------------------------\n");
+    temp = head2;
+    while(temp)
+    {
+        printf("|%-5d |%-20s |%-7.2f|\n", temp->roll, temp->name, temp->marks);
+        printf("------------------------------------\n");
+        temp = temp->next;
+    }
 
-	*ptr=p[c-1];
-
-	printf("The student record's are reverse linked...\n");
- stud_show(*ptr);  // show reversed list
-
-    free(p); 
+    // Free the temporary list
+    while(head2)
+    {
+        t = head2;
+        head2 = head2->next;
+        free(t);
+    }
 }
-
-
-int count(struct st *ptr)
-{
-int c=0;
-	while(ptr!=0)
-	{
-		++c;
-		ptr=ptr->next;
-	}
-	return c;
-}
-
 
