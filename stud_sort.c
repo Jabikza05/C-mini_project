@@ -1,10 +1,15 @@
-#include"header.h"
 
+#include "header.h"
 
-void stud_sort(ST *p)
+void stud_sort(ST **ptr)
 {
-    char op;
+    if (*ptr == NULL || (*ptr)->next == NULL)
+    {
+        printf("No records found to sort or only one record is entered ....\n");
+        return;
+    }
 
+    char op;
 
     printf("\n________________________________\n");
     printf("|                                |\n");
@@ -15,78 +20,98 @@ void stud_sort(ST *p)
 
     scanf(" %c", &op);
 
-    if(p == NULL || p->next == NULL)
+    // Duplicate the list temporarily
+    ST *temp = *ptr, *head2 = NULL, *new, *last = NULL;
+    while (temp)
     {
-        printf("No records or only one record, nothing to sort.\n");
-        return;
+        new = (ST*)malloc(sizeof(ST));
+        *new = *temp;
+        new->next = NULL;
+
+        if (head2 == NULL)
+            head2 = last = new;
+        else
+        {
+            last->next = new;
+            last = new;
+        }
+        temp = temp->next;
     }
 
     ST *temp1, *temp2;
 
-    switch(op)
+    switch (op)
     {
         case 'N': case 'n':
-            // Bubble sort by name
-            for(temp1 = p; temp1 != NULL; temp1 = temp1->next)
+            for (temp1 = head2; temp1 != NULL; temp1 = temp1->next)
             {
-                for(temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
+                for (temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
                 {
-                    if(strcmp(temp1->name, temp2->name) > 0)
+                    if (strcmp(temp1->name, temp2->name) > 0)
                     {
-                        // swap name
-                        char tname[20];
-			strcpy(tname, temp1->name);
-			strcpy(temp1->name, temp2->name);
-		       	strcpy(temp2->name, tname);
+                        ST t = *temp1;
+                        *temp1 = *temp2;
+                        *temp2 = t;
 
-                        // swap marks
-                        float tmarks = temp1->marks;
-		       	temp1->marks = temp2->marks;
-			temp2->marks = tmarks;
-
-                        // swap roll
-                        int troll = temp1->roll;
-		       	temp1->roll = temp2->roll;
-		       	temp2->roll = troll;
+                        ST *swap = temp1->next;
+                        temp1->next = temp2->next;
+                        temp2->next = swap;
                     }
                 }
             }
-            printf("Records sorted by Name.\n");
+            printf("\nRecords sorted by Name ..temporary..:\n");
             break;
 
         case 'P': case 'p':
-            // Bubble sort by marks
-            for(temp1 = p; temp1 != NULL; temp1 = temp1->next)
+            for (temp1 = head2; temp1 != NULL; temp1 = temp1->next)
             {
-                for(temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
+                for (temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
                 {
-                    if(temp1->marks < temp2->marks) // descending order
+                    if (temp1->marks < temp2->marks)
                     {
-                        // swap name
-                        char tname[20];
-			strcpy(tname, temp1->name);
-			strcpy(temp1->name, temp2->name);
-			strcpy(temp2->name, tname);
-                        // swap marks
-                        float tmarks = temp1->marks;
-			temp1->marks = temp2->marks;
-			temp2->marks = tmarks;
+                        ST t = *temp1;
+                        *temp1 = *temp2;
+                        *temp2 = t;
 
-                        // swap roll
-                        int troll = temp1->roll;
-			temp1->roll = temp2->roll;
-		       	temp2->roll = troll;
+                        ST *swap = temp1->next;
+                        temp1->next = temp2->next;
+                        temp2->next = swap;
                     }
                 }
             }
-            printf("Records sorted by Marks.\n");
+            printf("\nRecords sorted by Marks temporary....:\n");
             break;
 
         default:
             printf("Invalid choice for sorting.\n");
-            break;
+            // Free temporary list
+            while (head2)
+            {
+                temp = head2;
+                head2 = head2->next;
+                free(temp);
+            }
+            return;
     }
 
-    stud_show(p); // display sorted list
+    // Display temporary sorted list in tabular format
+    printf("\n--------------------------------------\n");
+    printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+    printf("------------------------------------\n");
+    temp = head2;
+    while (temp)
+    {
+        printf("|%-5d |%-20s |%-7.2f|\n", temp->roll, temp->name, temp->marks);
+        printf("------------------------------------\n");
+        temp = temp->next;
+    }
+
+    // Free temporary list (so main list remains safe)
+    while (head2)
+    {
+        temp = head2;
+        head2 = head2->next;
+        free(temp);
+    }
 }
 
