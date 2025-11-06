@@ -5,29 +5,32 @@ void stud_add(struct st **ptr)
     FILE *fp;
     struct st *temp, *p, *last;
 
-    // Load existing records from file
-    fp = fopen("student.dat", "r");
-    if (fp != NULL)
+    // Load existing records only if list is empty
+    if (*ptr == 0)
     {
-        while (1)
+        fp = fopen("student.dat", "r");
+        if (fp != NULL)
         {
-            temp = (struct st *)malloc(sizeof(struct st));
-            if (fscanf(fp, "%d %s %f", &temp->roll, temp->name, &temp->marks) != 3)
+            while (1)
             {
-                free(temp);
-                break;
-            }
-            temp->next = 0;
+                temp = (struct st *)malloc(sizeof(struct st));
+                if (fscanf(fp, "%d %s %f", &temp->roll, temp->name, &temp->marks) != 3)
+                {
+                    free(temp);
+                    break;
+                }
+                temp->next = 0;
 
-            if (*ptr == 0)
-                *ptr = last = temp;
-            else
-            {
-                last->next = temp;
-                last = temp;
+                if (*ptr == 0)
+                    *ptr = last = temp;
+                else
+                {
+                    last->next = temp;
+                    last = temp;
+                }
             }
+            fclose(fp);
         }
-        fclose(fp);
     }
 
     // Add new student
@@ -45,14 +48,14 @@ void stud_add(struct st **ptr)
         if (p->roll == r)
         {
             r++;
-            p = *ptr; // restart from head to check again
+            p = *ptr; // restart from head
         }
         else
             p = p->next;
     }
     temp->roll = r;
 
-    // Insert at end of list
+    // Insert at end
     if (*ptr == 0)
         *ptr = temp;
     else
@@ -63,5 +66,8 @@ void stud_add(struct st **ptr)
         p->next = temp;
     }
 
-//    printf("Record added successfully! Roll number: %d\n", temp->roll);
 }
+
+
+
+
