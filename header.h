@@ -21,7 +21,7 @@ void stud_mod(ST **p);
 void stud_save(ST *p);  
 void stud_exit(ST *p);  
 void stud_rev(ST **ptr);  
-void stud_sort(ST *p);
+void stud_sort(ST **ptr);
 void stud_del_all_rec(ST **p);  
 
 int count(struct st *ptr);
