@@ -1,5 +1,5 @@
-
 #include"header.h"
+
 
 void stud_del(ST **p)
 {
@@ -73,8 +73,8 @@ void stud_del(ST **p)
             printf("Enter name to delete: ");
             scanf("%s", name);
 
-            // 🔹 Step 1: show all matching names
-            int found = 0;
+            // 🔹 Step 1: show all matching names and count them
+            int found = 0, count = 0;
             ST *temp2 = head2;
             printf("\nMatching records with name '%s':\n", name);
             printf("--------------------------------------\n");
@@ -87,6 +87,7 @@ void stud_del(ST **p)
                     printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
                     printf("--------------------------------------\n");
                     found = 1;
+                    count++;
                 }
                 temp2 = temp2->next;
             }
@@ -97,28 +98,53 @@ void stud_del(ST **p)
                 break;
             }
 
-            // 🔹 Step 2: ask user which roll to delete if multiple
-            printf("Enter roll number to delete from above list: ");
             int rno;
-            scanf("%d", &rno);
-
-            temp = head2;
             prev = NULL;
-            while (temp)
-            {
-                if (temp->roll == rno && strcmp(temp->name, name) == 0)
-                {
-                    if (prev == NULL)
-                        head2 = temp->next;
-                    else
-                        prev->next = temp->next;
+            temp = head2;
 
-                    free(temp);
-                    printf("Record deleted (temporarily) successfully.\n");
-                    break;
+            // ✅ If only one record with that name → delete directly
+            if (count == 1)
+            {
+                while (temp)
+                {
+                    if (strcmp(temp->name, name) == 0)
+                    {
+                        if (prev == NULL)
+                            head2 = temp->next;
+                        else
+                            prev->next = temp->next;
+
+                        free(temp);
+                        printf("Record deleted (temporarily) successfully.\n");
+                        break;
+                    }
+                    prev = temp;
+                    temp = temp->next;
                 }
-                prev = temp;
-                temp = temp->next;
+            }
+            else   // ✅ Multiple records → ask roll number
+            {
+                printf("Enter roll number to delete from above list: ");
+                scanf("%d", &rno);
+
+                temp = head2;
+                prev = NULL;
+                while (temp)
+                {
+                    if (temp->roll == rno && strcmp(temp->name, name) == 0)
+                    {
+                        if (prev == NULL)
+                            head2 = temp->next;
+                        else
+                            prev->next = temp->next;
+
+                        free(temp);
+                        printf("Record deleted (temporarily) successfully.\n");
+                        break;
+                    }
+                    prev = temp;
+                    temp = temp->next;
+                }
             }
             break;
         }
