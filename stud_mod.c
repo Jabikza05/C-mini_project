@@ -1,3 +1,4 @@
+
 #include"header.h"
 
 void stud_mod(ST **p)
@@ -78,20 +79,15 @@ void stud_mod(ST **p)
             printf(" Enter the name: ");
             scanf("%s", s);
 
-            // 🔹 Step 1: show all matching names if duplicates exist
-            int found = 0;
+            // Step 1: count matching names
+            int found = 0, count = 0;
             ST *temp2 = head2;
-            printf("\nMatching records with name '%s':\n", s);
-            printf("--------------------------------------\n");
-            printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
-            printf("--------------------------------------\n");
             while (temp2)
             {
                 if (strcmp(temp2->name, s) == 0)
                 {
-                    printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
-                    printf("--------------------------------------\n");
                     found = 1;
+                    count++;
                 }
                 temp2 = temp2->next;
             }
@@ -102,29 +98,70 @@ void stud_mod(ST **p)
                 break;
             }
 
-            // 🔹 Step 2: Ask roll number if duplicates exist
-            printf("Enter roll number to modify from above list: ");
             int rollno;
-            scanf("%d", &rollno);
 
-            temp = head2;
-            while(temp != NULL)
+            // ✅ if only one record → modify directly (no table)
+            if (count == 1)
             {
-                if(temp->roll == rollno && strcmp(temp->name, s) == 0)
+                temp = head2;
+                while (temp)
                 {
-                    printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
-                            temp->roll, temp->name, temp->marks);
+                    if (strcmp(temp->name, s) == 0)
+                    {
+                        printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
+                                temp->roll, temp->name, temp->marks);
 
-                    printf(" Enter new name: ");
-                    scanf("%s", temp->name);
+                        printf(" Enter new name: ");
+                        scanf("%s", temp->name);
 
-                    printf(" Enter new marks: ");
-                    scanf("%f", &temp->marks);
+                        printf(" Enter new marks: ");
+                        scanf("%f", &temp->marks);
 
-                    printf("Record updated temporary .......\n");
-                    break;
+                        printf("Record updated temporary .......\n");
+                        break;
+                    }
+                    temp = temp->next;
                 }
-                temp = temp->next;
+            }
+            else  // ✅ multiple records → show table and ask roll number
+            {
+                printf("\nMatching records with name '%s':\n", s);
+                printf("--------------------------------------\n");
+                printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+                printf("--------------------------------------\n");
+                temp2 = head2;
+                while (temp2)
+                {
+                    if (strcmp(temp2->name, s) == 0)
+                    {
+                        printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
+                        printf("--------------------------------------\n");
+                    }
+                    temp2 = temp2->next;
+                }
+
+                printf("Enter roll number to modify from above list: ");
+                scanf("%d", &rollno);
+
+                temp = head2;
+                while(temp != NULL)
+                {
+                    if(temp->roll == rollno && strcmp(temp->name, s) == 0)
+                    {
+                        printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
+                                temp->roll, temp->name, temp->marks);
+
+                        printf(" Enter new name: ");
+                        scanf("%s", temp->name);
+
+                        printf(" Enter new marks: ");
+                        scanf("%f", &temp->marks);
+
+                        printf("Record updated temporary .......\n");
+                        break;
+                    }
+                    temp = temp->next;
+                }
             }
             break;
         }
