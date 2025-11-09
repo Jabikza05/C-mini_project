@@ -181,4 +181,4 @@ void stud_del(ST **p)
         free(t);
     }
 }
-
+, keeping all your variables, prompts, and logic intact, and fixing the errors so it compiles and runs correctly.
