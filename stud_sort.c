@@ -43,6 +43,10 @@ void stud_sort(ST **ptr)
     switch (op)
     {
         case 'N': case 'n':
+            printf("Do you want to sort with Name ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
+           {
             for (temp1 = head2; temp1 != NULL; temp1 = temp1->next)
             {
                 for (temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
@@ -58,11 +62,19 @@ void stud_sort(ST **ptr)
                         temp2->next = swap;
                     }
                 }
-            }
-            printf("\nRecords sorted by Name ..temporary..:\n");
-            break;
+              }
+           }
+            
+            else {
+                   printf("\nRecords sorted by Name ..temporary..:\n");
+                   } 
+               break;
 
         case 'P': case 'p':
+             printf("Do you want to sort with Percentage ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
+            {
             for (temp1 = head2; temp1 != NULL; temp1 = temp1->next)
             {
                 for (temp2 = temp1->next; temp2 != NULL; temp2 = temp2->next)
@@ -79,7 +91,11 @@ void stud_sort(ST **ptr)
                     }
                 }
             }
+    }
+     
+    else  {
             printf("\nRecords sorted by Marks temporary....:\n");
+            }
             break;
 
         default:
