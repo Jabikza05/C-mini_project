@@ -65,4 +65,9 @@ void stud_rev(ST **p)
         free(t);
     }
 }
+
+else
+    {
+	    printf("Records are not deleted....");
+    }
 }
