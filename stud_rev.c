@@ -3,11 +3,16 @@
 
 void stud_rev(ST **p)
 {
-    if (*p == NULL)
+      char op;
+    printf("Do you want to delete all the Records....[Y/y]:");
+	scanf(" %c",&op);
+	if(op=='Y'||op=='y')
     {
+      if (*p == NULL)
+       {
         printf("No records to reverse.\n");
         return;
-    }
+        }
 
     // Duplicate list temporarily
     ST *temp = *p, *head2 = NULL, *new, *t, *last = NULL;
@@ -60,4 +65,4 @@ void stud_rev(ST **p)
         free(t);
     }
 }
-
+}
