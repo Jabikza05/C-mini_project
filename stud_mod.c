@@ -1,5 +1,4 @@
-
-#include"header.h"
+#include "header.h"
 
 void stud_mod(ST **p)
 {
@@ -24,13 +23,13 @@ void stud_mod(ST **p)
 
     // Duplicate list temporarily
     ST *temp = *p, *head2 = NULL, *new, *t, *last = NULL;
-    while(temp)
+    while (temp)
     {
-        new = (ST*)malloc(sizeof(ST));
+        new = (ST *)malloc(sizeof(ST));
         *new = *temp;
         new->next = NULL;
 
-        if(head2 == NULL)
+        if (head2 == NULL)
             head2 = last = new;
         else
         {
@@ -42,85 +41,25 @@ void stud_mod(ST **p)
 
     temp = head2;
 
-    switch(op)
+    switch (op)
     {
-        case 'R': case 'r':
-              printf("Do you want to perform modification based on  rollno  ...[Y/y]:");
-            scanf(" %c",&op);
-            if(op=='Y'||op=='y')
-            {
-        
-            int n;
-            printf(" Enter the roll no to modify: ");
-            scanf("%d", &n);
-
-            while(temp != NULL)
-            {
-                if(temp->roll == n)
-                {
-                    printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
-                            temp->roll, temp->name, temp->marks);
-
-                    printf(" Enter new name: ");
-                    scanf("%s", temp->name);
-
-                    printf(" Enter new marks: ");
-                    scanf("%f", &temp->marks);
-
-                    printf("Record updated temporary.....\n");
-                    break;
-                }
-                temp = temp->next;
-            }
-            }
-                else{
-                 if(temp == NULL)
-                printf("Roll no not found!\n");
-                }
-                break;
-        
-
-        case 'N': case 'n':
-                    printf("Do you want to perform modification based on name  ...[Y/y]:");
-            scanf(" %c",&op);
-            if(op=='Y'||op=='y')
+        case 'R':
+        case 'r':
         {
-            char s[20];
-            printf(" Enter the name: ");
-            scanf("%s", s);
+            printf("Do you want to perform modification based on rollno ...[Y/y]:");
+            scanf(" %c", &op);
+            if (op == 'Y' || op == 'y')
+            {
+                int n;
+                printf(" Enter the roll no to modify: ");
+                scanf("%d", &n);
 
-            // Step 1: count matching names
-            int found = 0, count = 0;
-            ST *temp2 = head2;
-            while (temp2)
-            {
-                if (strcmp(temp2->name, s) == 0)
+                while (temp != NULL)
                 {
-                    found = 1;
-                    count++;
-                }
-                temp2 = temp2->next;
-            }
-        }
-       else{
-                if (!found)
-            {
-                printf("Name not found!\n");
-                break;
-            }
-       }
-            int rollno;
-
-            // ✅ if only one record → modify directly (no table)
-            if (count == 1)
-            {
-                temp = head2;
-                while (temp)
-                {
-                    if (strcmp(temp->name, s) == 0)
+                    if (temp->roll == n)
                     {
                         printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
-                                temp->roll, temp->name, temp->marks);
+                               temp->roll, temp->name, temp->marks);
 
                         printf(" Enter new name: ");
                         scanf("%s", temp->name);
@@ -128,96 +67,161 @@ void stud_mod(ST **p)
                         printf(" Enter new marks: ");
                         scanf("%f", &temp->marks);
 
-                        printf("Record updated temporary .......\n");
+                        printf("Record updated temporary.....\n");
                         break;
                     }
                     temp = temp->next;
                 }
+                if (temp == NULL)
+                    printf("Roll no not found!\n");
             }
-            else  // ✅ multiple records → show table and ask roll number
+            break;
+        }
+
+        case 'N':
+        case 'n':
+        {
+            printf("Do you want to perform modification based on name ...[Y/y]:");
+            scanf(" %c", &op);
+            if (op == 'Y' || op == 'y')
             {
-                printf("\nMatching records with name '%s':\n", s);
-                printf("--------------------------------------\n");
-                printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
-                printf("--------------------------------------\n");
-                temp2 = head2;
+                char s[20];
+                printf(" Enter the name: ");
+                scanf("%s", s);
+
+                int found = 0, count = 0;
+                ST *temp2 = head2;
+
+                // Count matching names
                 while (temp2)
                 {
                     if (strcmp(temp2->name, s) == 0)
                     {
-                        printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
-                        printf("--------------------------------------\n");
+                        found = 1;
+                        count++;
                     }
                     temp2 = temp2->next;
                 }
 
-                printf("Enter roll number to modify from above list: ");
-                scanf("%d", &rollno);
-
-                temp = head2;
-                while(temp != NULL)
+                if (!found)
                 {
-                    if(temp->roll == rollno && strcmp(temp->name, s) == 0)
+                    printf("Name not found!\n");
+                    break;
+                }
+
+                int rollno;
+
+                if (count == 1) // only one matching name
+                {
+                    temp = head2;
+                    while (temp)
                     {
-                        printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
-                                temp->roll, temp->name, temp->marks);
+                        if (strcmp(temp->name, s) == 0)
+                        {
+                            printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
+                                   temp->roll, temp->name, temp->marks);
 
-                        printf(" Enter new name: ");
-                        scanf("%s", temp->name);
+                            printf(" Enter new name: ");
+                            scanf("%s", temp->name);
 
-                        printf(" Enter new marks: ");
-                        scanf("%f", &temp->marks);
+                            printf(" Enter new marks: ");
+                            scanf("%f", &temp->marks);
 
-                        printf("Record updated temporary .......\n");
-                        break;
+                            printf("Record updated temporary .......\n");
+                            break;
+                        }
+                        temp = temp->next;
                     }
-                    temp = temp->next;
+                }
+                else // multiple names
+                {
+                    printf("\nMatching records with name '%s':\n", s);
+                    printf("--------------------------------------\n");
+                    printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
+                    printf("--------------------------------------\n");
+                    temp2 = head2;
+                    while (temp2)
+                    {
+                        if (strcmp(temp2->name, s) == 0)
+                        {
+                            printf("|%-5d |%-20s |%-7.2f|\n", temp2->roll, temp2->name, temp2->marks);
+                            printf("--------------------------------------\n");
+                        }
+                        temp2 = temp2->next;
+                    }
+
+                    printf("Enter roll number to modify from above list: ");
+                    scanf("%d", &rollno);
+
+                    temp = head2;
+                    while (temp)
+                    {
+                        if (temp->roll == rollno && strcmp(temp->name, s) == 0)
+                        {
+                            printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
+                                   temp->roll, temp->name, temp->marks);
+
+                            printf(" Enter new name: ");
+                            scanf("%s", temp->name);
+
+                            printf(" Enter new marks: ");
+                            scanf("%f", &temp->marks);
+
+                            printf("Record updated temporary .......\n");
+                            break;
+                        }
+                        temp = temp->next;
+                    }
                 }
             }
             break;
         }
 
-        case 'P': case 'p':
-             printf("Do you want to perform modification based on percentage ...[Y/y]:");
-            scanf(" %c",&op);
-            if(op=='Y'||op=='y')
+        case 'P':
+        case 'p':
         {
-            float per;
-            printf(" Enter the percentage to search: ");
-            scanf("%f", &per);
-
-            ST *found = NULL;
-            while(temp != NULL)
+            printf("Do you want to perform modification based on percentage ...[Y/y]:");
+            scanf(" %c", &op);
+            if (op == 'Y' || op == 'y')
             {
-                if(temp->marks == per)
+                float per;
+                printf(" Enter the percentage to search: ");
+                scanf("%f", &per);
+
+                ST *found = NULL;
+                while (temp)
                 {
-                    found = temp;
+                    if (temp->marks == per)
+                    {
+                        found = temp;
+                        break;
+                    }
+                    temp = temp->next;
+                }
+
+                if (found == NULL)
+                {
+                    printf("Percentage not found!\n");
                     break;
                 }
-                temp = temp->next;
+
+                printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
+                       found->roll, found->name, found->marks);
+
+                printf(" Enter new name: ");
+                scanf("%s", found->name);
+
+                printf(" Enter new marks: ");
+                scanf("%f", &found->marks);
+
+                printf("Record updated temporary...........\n");
             }
-else{
-            if(found == NULL)
-            {
-                printf("Percentage not found!\n");
-                break;
-            }
-}
-            printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
-                    found->roll, found->name, found->marks);
-
-            printf(" Enter new name: ");
-            scanf("%s", found->name);
-
-            printf(" Enter new marks: ");
-            scanf("%f", &found->marks);
-
-            printf("Record updated temporary...........\n");
             break;
         }
 
         default:
             printf("Invalid option!\n");
+            break;
     }
 
     // Display updated temporary list
@@ -225,7 +229,7 @@ else{
     printf("\n--------------------------------------\n");
     printf("|%-5s |%-20s |%-7s|\n", "Roll", "Name", "Marks");
     printf("--------------------------------------\n");
-    while(temp)
+    while (temp)
     {
         printf("|%-5d |%-20s |%-7.2f|\n", temp->roll, temp->name, temp->marks);
         printf("--------------------------------------\n");
@@ -233,11 +237,10 @@ else{
     }
 
     // Free temporary list
-    while(head2)
+    while (head2)
     {
         t = head2;
         head2 = head2->next;
         free(t);
     }
 }
-
