@@ -4,7 +4,7 @@
 void stud_rev(ST **p)
 {
       char op;
-    printf("Do you want to delete all the Records....[Y/y]:");
+    printf("Do you want to reverse all the Records....[Y/y]:");
 	scanf(" %c",&op);
 	if(op=='Y'||op=='y')
     {
@@ -68,6 +68,6 @@ void stud_rev(ST **p)
 
 else
     {
-	    printf("Records are not deleted....");
+	    printf("Records are not reversed....");
     }
 }
