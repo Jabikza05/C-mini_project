@@ -4,7 +4,7 @@
 void stud_exit(ST *p)
 {   
     char op;
-    printf("Do you want to delete all the Records....[Y/y]:");
+    printf("Do you want to Exit the program.....[Y/y]:");
 	scanf(" %c",&op);
 	if(op=='Y'||op=='y')
     {
