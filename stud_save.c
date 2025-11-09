@@ -18,6 +18,10 @@ void stud_save(ST *p)
     {
         case 'S':
         case 's':
+              printf("Do you want to save and exit ...[Y/y]:");
+            scanf(" %c",&ch);
+            if(ch=='Y'||ch=='y')
+            {
             fp = fopen("student.dat", "w");  // open once in write mode
             if(fp == 0)
             {
@@ -31,15 +35,25 @@ void stud_save(ST *p)
                 p = p->next;
             }
 
+            
             fclose(fp);
-            printf("All records saved successfully into student.dat\n");
+            }
+            else
+            {
+                printf("All records saved successfully into student.dat\n");
             exit(0);
+            }
             break;
 
         case 'E':
         case 'e':
+             printf("Do you want to Exit without saving....[Y/y]:");
+            scanf(" %c",&ch);
+            if(ch=='Y'||ch=='y')
+            {
             printf("Exit without saving...\n");
             exit(0);
+            }
             break;
 
         default:
