@@ -1,9 +1,10 @@
 #include"header.h"
+
 void stud_del_all_rec(ST **p)
 {
 	ST *temp;
    char op;
-	
+
 	printf("Do you want to delete all the Records....[Y/y]:");
 	scanf(" %c",&op);
 	if(op=='Y'||op=='y')
