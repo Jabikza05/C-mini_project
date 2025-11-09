@@ -1,12 +1,14 @@
 
 #include"header.h"
+
 // Exit function
 void stud_exit(ST *p)
-{   
+{
     char op;
+   
     printf("Do you want to Exit the program.....[Y/y]:");
 	scanf(" %c",&op);
-	if(op=='Y'||op=='y')
+if(op=='Y'||op=='y')
     {
     printf("\nExiting program. Goodbye!\n");
 
@@ -21,6 +23,10 @@ void stud_exit(ST *p)
 
     exit(0); // terminate program
  }
+else
+{
+    printf("Program is continued...");
+}
 
 }
 
