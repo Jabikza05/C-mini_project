@@ -43,6 +43,9 @@ void stud_del(ST **p)
     switch (op)
     {
         case 'R': case 'r':
+             printf("Do you want to delete the data based on rollno ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
         {
             int roll;
             printf("Enter roll number to delete: ");
@@ -66,8 +69,11 @@ void stud_del(ST **p)
             }
             break;
         }
-
+    
         case 'N': case 'n':
+             printf("Do you want to delete the data based on name ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
         {
             char name[20];
             printf("Enter name to delete: ");
@@ -91,8 +97,9 @@ void stud_del(ST **p)
                 }
                 temp2 = temp2->next;
             }
-
-            if (!found)
+        }
+           
+         if (!found)
             {
                 printf("No records found with the given name.\n");
                 break;
@@ -103,7 +110,7 @@ void stud_del(ST **p)
             temp = head2;
 
             // ✅ If only one record with that name → delete directly
-            if (count == 1)
+          else if (count == 1)
             {
                 while (temp)
                 {
