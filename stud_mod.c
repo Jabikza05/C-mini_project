@@ -45,7 +45,11 @@ void stud_mod(ST **p)
     switch(op)
     {
         case 'R': case 'r':
-        {
+              printf("Do you want to perform modification based on  rollno  ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
+            {
+        
             int n;
             printf(" Enter the roll no to modify: ");
             scanf("%d", &n);
@@ -68,12 +72,18 @@ void stud_mod(ST **p)
                 }
                 temp = temp->next;
             }
-            if(temp == NULL)
+            }
+                else{
+                 if(temp == NULL)
                 printf("Roll no not found!\n");
-            break;
-        }
+                }
+                break;
+        
 
         case 'N': case 'n':
+                    printf("Do you want to perform modification based on name  ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
         {
             char s[20];
             printf(" Enter the name: ");
@@ -91,13 +101,14 @@ void stud_mod(ST **p)
                 }
                 temp2 = temp2->next;
             }
-
-            if (!found)
+        }
+       else{
+                if (!found)
             {
                 printf("Name not found!\n");
                 break;
             }
-
+       }
             int rollno;
 
             // ✅ if only one record → modify directly (no table)
@@ -167,6 +178,9 @@ void stud_mod(ST **p)
         }
 
         case 'P': case 'p':
+             printf("Do you want to perform modification based on percentage ...[Y/y]:");
+            scanf(" %c",&op);
+            if(op=='Y'||op=='y')
         {
             float per;
             printf(" Enter the percentage to search: ");
@@ -182,13 +196,13 @@ void stud_mod(ST **p)
                 }
                 temp = temp->next;
             }
-
+else{
             if(found == NULL)
             {
                 printf("Percentage not found!\n");
                 break;
             }
-
+}
             printf("Record found: Roll = %d, Name = %s, Marks = %.2f\n",
                     found->roll, found->name, found->marks);
 
