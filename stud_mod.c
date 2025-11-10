@@ -1,4 +1,4 @@
-
+#include"header.h"
 void stud_mod(ST **p)
 {
     if (*p == NULL)
