@@ -1,5 +1,4 @@
 #include"header.h"
-
 void stud_del_all_rec(ST **p)
 {
 	ST *temp;
