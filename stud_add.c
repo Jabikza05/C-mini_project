@@ -1,9 +1,8 @@
 #include"header.h"
-
 void stud_add(struct st **ptr)
 {
     FILE *fp;
-    struct st *temp, *p, *last;
+    struct st *temp, *p, *prev, *last;
 
     // Load existing records only if list is empty
     if (*ptr == 0)
@@ -55,19 +54,21 @@ void stud_add(struct st **ptr)
     }
     temp->roll = r;
 
-    // Insert at end
-    if (*ptr == 0)
+    // ✅ Insert in sorted order of roll number
+    if (*ptr == NULL || (*ptr)->roll > temp->roll)
+    {
+        temp->next = *ptr;
         *ptr = temp;
+    }
     else
     {
         p = *ptr;
-        while (p->next != 0)
+        while (p->next != NULL && p->next->roll < temp->roll)
             p = p->next;
+
+        temp->next = p->next;
         p->next = temp;
     }
 
 }
-
-
-
 
